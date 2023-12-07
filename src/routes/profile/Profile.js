@@ -6,7 +6,7 @@ import validateForm from "../../components/validateForm";
 
 const Profile = ({ currentUser, handleLogout, updateUser }) => {
     const [editForm, setEditForm] = useState(false);
-    const [formValue, setFormValue] = useState({ email: '', password: '', fullname: '', address: '', number: '' });
+    const [formValue, setFormValue] = useState({ email: '', password: '', fullname: '', address: '', number: '' , thumbImg: '' , coverImg: '' });
     const [formErrors, setFormErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [confirmationModal, setConfirmationModal] = useState(false);
@@ -117,6 +117,18 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
                         </section>
                         <span className="input-validation-error">{formErrors.number}</span>
                         <hr />
+                        <section className="profile-information-section">
+                            <label htmlFor="thumImg">thumbImg</label>
+                            <input name="thumbImg" type="text" value={formValue.thumbImg} placeholder={currentUser.number !== null ? currentUser.number : 'Add number...'} onChange={handleValidation} />
+                        </section>
+                        {/*<span className="input-validation-error">{formErrors.number}</span>*/}
+                        <hr />
+                        <section className="profile-information-section">
+                            <label htmlFor="coverImg">coverImg</label>
+                            <input name="coverImg" type="text" value={formValue.coverImg} placeholder={currentUser.number !== null ? currentUser.number : 'Add number...'} onChange={handleValidation} />
+                        </section>
+                        {/*<span className="input-validation-error">{formErrors.number}</span>*/}
+                        <hr />
                         <section className="profile-buttons">
                             <button type="button" className="active-button-style" onClick={() => { toggleForm(); ResetLocation() }}>Cancel edit</button>
                             <button className="passive-button-style">Save profile</button>
@@ -151,6 +163,20 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
                                 <h3>Number</h3>
                                 {currentUser.number !== null ?
                                     <p>{currentUser.number}</p> :
+                                    <p>N/A</p>}
+                            </section>
+                            <hr />
+                            <section className="profile-information-section">
+                                <h3>thumbImg</h3>
+                                {currentUser.thumbImg !== null ?
+                                    <p>{currentUser.thumbImg}</p> :
+                                    <p>N/A</p>}
+                            </section>
+                            <hr />
+                            <section className="profile-information-section">
+                                <h3>coverImg</h3>
+                                {currentUser.coverImg !== null ?
+                                    <p>{currentUser.coverImg}</p> :
                                     <p>N/A</p>}
                             </section>
                             <hr />

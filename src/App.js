@@ -28,6 +28,10 @@ import Careers from './routes/careers/Careers.js';
 import BlogPost from './routes/blog-post/BlogPost.js';
 import Profile from './routes/profile/Profile.js';
 import ResetLocation from './helpers/ResetLocation.js';
+import NewComponent from "./routes/weverse/t";
+import Weverse from "./routes/weverse/Weverse";
+import artist from "./data/artist";
+import Artist from "./routes/artist/Artist";
 
 function App() {
   const [allCategories, setAllCategories] = useState([]);
@@ -485,6 +489,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={validLogin ? <NotFound /> : <Register activateLoginModal={activateLoginModal} />} />
         <Route path="/profile" element={!validLogin ? <NotFound /> : <Profile currentUser={currentUser} getUser={getUser} handleLogout={handleLogout} updateUser={updateUser} />} />
+        <Route path="/artist" element={!validLogin ? <NotFound /> : <Artist currentUser={currentUser} getUser={getUser} handleLogout={handleLogout} updateUser={updateUser} />} />
         <Route
           path="/checkout"
           element={
@@ -519,6 +524,15 @@ function App() {
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/t" element={<NewComponent />} />
+        <Route
+            exact path="/weverse"
+            element={
+              <Weverse
+                  artist={artist}
+              />
+            }
+        />
       </Routes>
 
       <Footer />

@@ -78,6 +78,26 @@ const Header = ({ loginModal,
               Menu
             </NavLink>
           </li>
+            <li>
+                <NavLink
+                    onClick={() => {
+                        ResetLocation()
+                        hideMenu()
+                    }}
+                    style={({ isActive }) =>
+                        isActive
+                            ? {
+                                textDecoration: 'none',
+                                color: '#ff6240',
+                            }
+                            : {}
+                    }
+                    className="txt-white"
+                    to="/weverse"
+                >
+                    Weverse
+                </NavLink>
+            </li>
 
           <li>
             <NavLink
@@ -159,6 +179,26 @@ const Header = ({ loginModal,
               Profile
             </NavLink>
           </li> : null}
+            {validLogin ? <li>
+                <NavLink
+                    onClick={() => {
+                        ResetLocation()
+                        hideMenu()
+                    }}
+                    style={({ isActive }) =>
+                        isActive
+                            ? {
+                                textDecoration: 'none',
+                                color: '#ff6240',
+                            }
+                            : {}
+                    }
+                    className="txt-white"
+                    to="/artist"
+                >
+                    Artist Profile
+                </NavLink>
+            </li> : null}
           <li>
             <div className="login-and-cart">
               {validLogin ? (
