@@ -24,7 +24,7 @@ export const getArtist = (id) => {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, 'public/artistImage');
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
