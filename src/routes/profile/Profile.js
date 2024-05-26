@@ -74,6 +74,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
 
     useEffect(() => {
         document.title = "Profile | Pizza Time";
+        console.log(currentUser)
     }, []);
     return (
         <main className="profile">

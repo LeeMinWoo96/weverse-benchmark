@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createArtist, deleteArtist, getArtist, getArtists, updateArtist } from "../controllers/aritsts.controller.mjs";
+import { createArtist, deleteArtist, getArtist, getFollowArtists, getArtists, updateArtist } from "../controllers/aritsts.controller.mjs";
 import {uploadMultipleFiles} from "../services/artists.service.mjs";
 
 const artistsRouter = Router();
@@ -7,6 +7,8 @@ const artistsRouter = Router();
 artistsRouter.get('/', getArtists);
 
 artistsRouter.get('/:id', getArtist);
+
+artistsRouter.get('/follow/:id', getFollowArtists);
 
 // artistsRouter.post('/', uploadMultipleFiles, createArtist);
 

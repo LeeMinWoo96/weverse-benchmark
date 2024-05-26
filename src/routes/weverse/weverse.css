@@ -1,4 +1,11 @@
 /* styles.css */
 .artist-grid {
   display: flex;
+  justify-content: center;
+  margin: 1%;
+  padding: 1%;
+}
+
+.cap {
+  color: white;
 }

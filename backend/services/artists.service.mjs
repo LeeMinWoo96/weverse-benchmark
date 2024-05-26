@@ -22,6 +22,15 @@ export const getArtist = (id) => {
     })
 }
 
+export const getFollowArtists = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM follow_artists fa LEFT JOIN artists a on (fa.artist_id = a.id ) WHERE fa.user_id = ?';
+        sql.execute(query, [id])
+            .then((result) => resolve(result))
+            .catch((err) => reject(err))
+    })
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/artistImage');

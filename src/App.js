@@ -28,10 +28,11 @@ import Careers from './routes/careers/Careers.js';
 import BlogPost from './routes/blog-post/BlogPost.js';
 import Profile from './routes/profile/Profile.js';
 import ResetLocation from './helpers/ResetLocation.js';
-import NewComponent from "./routes/weverse/t";
-import Weverse from "./routes/weverse/Weverse";
-import artist from "./data/artist";
-import Artist from "./routes/artist/Artist";
+// import NewComponent from "./routes/weverse/t.js";
+import Weverse from "./routes/weverse/Weverse.js";
+// import artist from "./data/artist.js";
+import Artist from "./routes/artist/Artist.js";
+import ArtistFeed from "./routes/weverse/ArtistFeed.js";
 
 function App() {
   const [allCategories, setAllCategories] = useState([]);
@@ -46,6 +47,7 @@ function App() {
   const [isModalActive, setIsModalActive] = useState(false);
   const [loginModalWindow, setLoginModalWindow] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [loading, setLoading] = useState(true);
 
 
   const getUser = async (id) => {
@@ -107,8 +109,10 @@ function App() {
       sessionStorage.setItem('validLogin', true);
     }
     if (sessionStorage.getItem('validLogin') !== null) {
+      setLoading(false);
       setValidLogin(sessionStorage.getItem('validLogin'))
     }
+    setLoading(false);
   }, [validLogin])
 
 
@@ -404,6 +408,14 @@ function App() {
     getProductsByCategory(newCategory);
   };
 
+  if (loading) {
+    // 로딩 중이면 로딩 스피너 또는 다른 로딩 상태를 표시할 수 있음
+    //  요게 있으면 not found 삼한연산자 없어도
+    // validlogin 이 갱신되기 전까지 기다렸다가
+    // 랜더링 할 뚜 있음
+    return <p>Loading...</p>;
+  }
+
   return (
     <BrowserRouter>
       <Header
@@ -524,15 +536,28 @@ function App() {
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
-        <Route path="/t" element={<NewComponent />} />
+
+
+        <Route path="/:name/feed" element={<ArtistFeed currentUser={currentUser} artist_id = {1}/>} />
+        {/*<Route path="/t" element={<NewComponent />} />*/}
         <Route
-            exact path="/weverse"
+            path="/weverse"
+            // element={ !validLogin ? <NotFound /> :
             element={
               <Weverse
-                  artist={artist}
+                  currentUser={currentUser} validLogin={validLogin}
               />
+            //     하나는 위버스로 바로 들어가고, 하나는 NotFound 에서 리다이렉트 됨 --> 리다이렉트라기보단 상태값을 체크해서 랜더링하는 리엑트
+        //         매번 상태값을 체크하고 초기엔 false 였응께 NotFound 들갔다가 변경된 후 그 걸 감지해서 재 런더링한거임
+
+        //       리액트 라우터에서 <Route> 컴포넌트의 element prop에 함수나 컴포넌트를 전달할 때, 이 함수나 컴포넌트는 매번 랜더링됩니다. 따라서 !validLogin ? <NotFound /> : <Weverse currentUser={currentUser} validLogin={validLogin} /> 표현식에서 !validLogin이 true일 때 <NotFound />가 렌더링되고, 그 후에 false로 업데이트되면서 <Weverse />가 렌더링되는 것이 일어날 수 있습니다.
+        //
+        // 여기서 중요한 점은, 라우터의 상태나 URL의 변화가 있을 때마다 해당 라우트에 대한 컴포넌트가 다시 렌더링된다는 것입니다. 만약 페이지를 새로고침하면 라우터는 초기 상태로 돌아가게 되며, 이로 인해 validLogin이 처음에는 false로 평가되어 <NotFound />가 렌더링되고 나중에 getUser 등의 비동기 작업을 통해 validLogin이 true로 변경되어도, 이미 렌더링된 <NotFound /> 컴포넌트는 변경되지 않습니다.
+        //
+        // 이를 방지하기 위해서는 컴포넌트가 마운트될 때 한 번만 실행되는 로직이나, 비동기 작업이 완료된 후에 라우트를 변경하는 등의 방법을 사용해야 합니다. 아래는 라우트를 변경하는 비동기 작업이 완료된 후에 라우트를 변경하는 예시입니다:
             }
         />
+        {/*<Route path="/weverse" element={!validLogin ? <NotFound /> : <Weverse currentUser={currentUser} getUser={getUser} handleLogout={handleLogout} updateUser={updateUser} />} />*/}
       </Routes>
 
       <Footer />

@@ -1,16 +1,33 @@
 import Attribute from "../menu/Attribute";
 import React from "react";
+import {Link} from "react-router-dom";
 
 // 두개로 나누기 하나는 route 에 연결된 곳하고 하나는 거기서 호출되서 그리는 포스트 blog랑 blogPost 처럼
 //
 
 const WeverseArtist = ({artist}) => {
+
+    const handleClick = () => {
+        // 세션에 artist 정보 저장
+        sessionStorage.setItem('artist', JSON.stringify(artist));
+
+        // 이동할 URL 설정
+        const url = `${artist.feed_link}`;
+
+        // URL로 이동
+        window.location.href = url;
+    };
+    console.log(artist)
+
     return (
-        <div>
+        <div style={{padding : 1+'%'}}>
             <title>Weverse - Official for All Fans</title>
             <div id="root">
-                <div className="App">
-                    <a className="HomeArtistListSlotView_artist_link__Mjm6r" href={artist.feed_link}>
+                <div className="App" >
+                    <div onClick={handleClick}>
+
+                    {/*<Link to={`${artist.feed_link}`} state={{artist: artist}}>*/}
+                    {/*<a className="HomeArtistListSlotView_artist_link__Mjm6r" href={artist.feed_link}>*/}
                         <div
                             className="HomeArtistListSlotView_artist_cover_wrap__TGsNP">
                             <img
@@ -19,10 +36,10 @@ const WeverseArtist = ({artist}) => {
                                 className="HomeArtistListSlotView_cover_img__a2krk"
                                 alt=""/></div>
                         <div
-                            className="HomeArtistListSlotView_artist_thumb_wrap__du30B">
+                            className="HomeArtistListSlotView_artist_thumb_wrap__du30B" >
                             <div
                                 className="ProfileThumbnailView_thumbnail_area__u25Uf ProfileThumbnailView_-community__+PkFD"
-                                style={{width: '43px', height: '43px'}}>
+                                style={{width: '43px', height: '43px' }}>
                                 <div
                                     className="ProfileThumbnailView_thumbnail_wrap__ZgeTf">
                                     <div style={{
@@ -46,8 +63,10 @@ const WeverseArtist = ({artist}) => {
                                     className="MarqueeView_content__2Qs2H">{artist.fullname}</span>
                                 </div>
                             </strong></div>
-                    </a>
+                    {/*</Link>*/}
+                    </div>
                 </div>
+
             </div>
 
         </div>

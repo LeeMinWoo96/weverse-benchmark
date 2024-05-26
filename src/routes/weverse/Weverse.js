@@ -11,12 +11,15 @@ import ResetLocation from "../../helpers/ResetLocation";
 import WeverseArtist from "./WeverseArtist";
 import allBlogPosts from "../../data/allBlogPosts";
 
-const Weverse = () => {
+const Weverse = ({currentUser, validLogin}) => {
     const [itemOffset, setItemOffset] = useState(0);
     const [endOffset, setEndOffset] = useState(itemOffset + 2);
     const [allArtists, setAllArtists] = useState([]);
-    const [currentArtists, setcurrentArtists] = useState([]);
+    const [viewArtists, setViewArtists] = useState([]);
+    const [followArtists, setFollowArtists] = useState([]);
     const [pageCountArtists, setpageCountArtists] = useState(Math.ceil(4 / 2));
+
+
     const getArtist = async () => {
         try {
             const response = await fetch(process.env.REACT_APP_ARTISTS_URL);
@@ -28,6 +31,17 @@ const Weverse = () => {
         }
     }
 
+    const getFollowArtist = async () => {
+        try {
+            console.log(currentUser)
+            const response = await fetch(`${process.env.REACT_APP_FOLLOW_ARTISTS_URL}/${currentUser.id}`);
+            const body = await response.json();
+            return body.data;
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
     const getArtists = async () => {
         try {
             const response = await fetch(process.env.REACT_APP_ARTISTS_URL);
@@ -39,45 +53,65 @@ const Weverse = () => {
         }
     }
 
-
-
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * 4) % allArtists.length;
-        console.log(event.selected)
-        console.log(allArtists.length)
+        // const newOffset = (event.selected * itemsPerPage) % count;
+        const newOffset = (event.selected * 2) % 4;
+        console.log(newOffset)
         setItemOffset(newOffset);
         ResetLocation();
     };
 
+
     useEffect(() => {
+        console.log(currentUser)
+        console.log(validLogin)
         document.title = "Artist | Weverse";
-        // setEndOffset(itemOffset + 5);
         const fetchData = async () => {
-            const data = await getArtists();
-            console.log(data)
-            setAllArtists([...data].reverse().slice(itemOffset, endOffset));
+            const all_artist_list = await getArtists();
+
+            const follow_artist_list = await getFollowArtist(currentUser);
+            console.log(follow_artist_list)
+            setAllArtists([...all_artist_list]);
+            setFollowArtists([...follow_artist_list]);
+            setViewArtists([...all_artist_list].reverse().slice(itemOffset, endOffset));
+            setpageCountArtists(Math.ceil(all_artist_list.length/2));
             setEndOffset(itemOffset + 2);
-            console.log(itemOffset)
-            setpageCountArtists(Math.ceil(data.length / 2));
         };
         fetchData();
+    }, []);
 
+    useEffect(() => {
+        setViewArtists([...allArtists].reverse().slice(itemOffset, endOffset));
 
+        setEndOffset(itemOffset + 2);
+        console.log(itemOffset)
+        setpageCountArtists(Math.ceil(allArtists.length/2));
     }, [setEndOffset, endOffset, itemOffset]);
+
     return (
         <motion.main
-            className="blog"
+            className="WeverseMain"
             initial={{ opacity: 0, translateX: -300 }}
             whileInView={{ opacity: 1, translateX: 0 }}
             exit={{ opacity: 0, translateX: -300 }}
             transition={{ duration: 1 }}
         >
-            <h2>Artists</h2>
+            <section className="follow-artist">
+                <h2 className="cap">나의 커뮤니티</h2>
+                <div className="artist-grid">
+                    {followArtists.map((artist, index) => (
+                        <WeverseArtist key={index} artist={artist} />
+                    ))}
+                </div>
+            </section>
 
-            <section className="artist-grid" >
-                {allArtists.map((artist, index) => (
-                    <WeverseArtist key={index} artist={artist} />
-                ))}
+            <section className="all_artist-grid">
+                <h2 className="cap">새로운 아티스트를 만나보세요!</h2>
+                <div className="artist-grid">
+                    {viewArtists.map((artist, index) => (
+                        <WeverseArtist key={index} artist={artist} />
+                    ))}
+                </div>
             </section>
             <ReactPaginate
                 className="pagination artist-pagination"

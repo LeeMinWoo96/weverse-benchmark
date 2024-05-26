@@ -23,6 +23,20 @@ export const getArtist = (req, res) => {
             res.status(500).send(err)
         })
 };
+
+export const getFollowArtists = (req, res) => {
+    const { id } = req.params;
+    artistService.getFollowArtists(id)
+        .then((result) => {
+            res.status(200).json({
+                message: "User retrieved",
+                data: result[0]
+            })
+        }).catch((err) => {
+        res.status(500).send(err)
+    })
+};
+
 export const createArtist = (req, res) => {
     const user = req.body;
     const thumbPath = req.files['thumbImg'] ? req.files['thumbImg'][0].path : null;
