@@ -4,6 +4,7 @@ import sql from '../config/sql.mjs';
 import { producer, consumer, connectKafka, disconnectKafka } from "../config/kafka_confg.mjs";
 import runConsumer from "../services/kafka.consumer.mjs"
 import indexRouter from '../routes/index.route.mjs';
+import {addClient, removeClient} from "../config/sse_config.mjs";
 
 const app = express();
 const port = 3005; // Choose a port for your server
@@ -15,6 +16,7 @@ app.use("/", indexRouter)
 app.use(("*"), (req, res) => {
     res.send("404 - Not Found!")
 })
+
 
 // 카프카 연결
 connectKafka().then(() => {

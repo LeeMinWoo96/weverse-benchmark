@@ -1,5 +1,6 @@
 import { consumer, connectKafka } from '../config/kafka_confg.mjs';
 import {json} from "express";
+import {processNotification} from "./notification.service.mjs";
 // import { processNotification } from './notification.service.mjs';
 
 const runConsumer = async () => {
@@ -13,7 +14,7 @@ const runConsumer = async () => {
             console.log(JSON.stringify(message))
             const event = JSON.parse(JSON.stringify(message));
             console.log("receive2")
-            // await processNotification(event);
+            await processNotification(event);
         },
     });
 };

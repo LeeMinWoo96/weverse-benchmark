@@ -437,6 +437,7 @@ function App() {
         handleLogout={handleLogout}
         validLogin={validLogin}
         productsQuantity={productsQuantity}
+        currentUser={currentUser}
       />
       <Routes>
         <Route path="/" element={<RootSection />} />

@@ -4,6 +4,7 @@ import captchaRouter from "./captcha.route.mjs";
 import artistsRouter from "./artists.route.mjs";
 import postRouter from "./post.route.mjs";
 import testRouter from "./test.route.mjs";
+import notificationRouter from "./notification.route.mjs";
 
 const indexRouter = Router();
 
@@ -19,8 +20,8 @@ indexRouter.use('/posts', postRouter);
 
 indexRouter.use('/test', testRouter);
 
+indexRouter.use('/notifications', notificationRouter);
+
 indexRouter.use('/verify-recaptcha', captchaRouter);
-
-
 
 export default indexRouter;
