@@ -1,8 +1,37 @@
 import { Router } from "express";
 import {addClient, removeClient} from "../config/sse_config.mjs";
+import {producer} from "../config/kafka_config.mjs";
+
 
 const notificationRouter = Router();
 
+notificationRouter.post('/events/:type', async (req, res) => {
+    const { userId, senderId, title, message } = req.body;
+    const timestamp = new Date().toISOString();
+    const read = false;
+
+    try {
+        await producer.send({
+            topic: `notification-events-${req.params.type}`,
+            messages: [
+                {
+                    value: JSON.stringify({
+                        userId,
+                        senderId,
+                        type: req.params.type,
+                        title,
+                        message,
+                        timestamp,
+                        read
+                    })
+                },
+            ],
+        });
+        res.status(200).send('Successfully stored event of type: ' + req.params.type + '\n');
+    } catch (error) {
+        res.status(500).send('Error storing event: ' + error.message);
+    }
+});
 
 //Server sent event
 notificationRouter.get('/:userId/sse', (req, res) => {

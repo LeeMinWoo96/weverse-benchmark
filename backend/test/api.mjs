@@ -1,18 +1,18 @@
 import axios from 'axios';
 
-// API 엔드포인트 URL
-const apiUrl = 'http://localhost:3005/test/events/';
+const apiUrl = 'http://localhost:3005/notifications/events/message';
 
-// 이벤트 이름
-const eventName = 'myEvent';
+const notificationData = {
+    userId: 'test',
+    senderId: 'senderUserId',
+    title: 'New Message',
+    message: 'You have received a new message.'
+};
 
-// POST 요청 보내기
-axios.post(apiUrl + eventName)
+axios.post(apiUrl, notificationData)
     .then(response => {
-        // 응답 데이터 출력
-        console.log('API 응답 데이터:', response.data);
+        console.log('API response data:', response.data);
     })
     .catch(error => {
-        // 오류 처리
-        console.error('API 호출 중 오류 발생:', error);
+        console.error('Error occurred during API call:', error);
     });

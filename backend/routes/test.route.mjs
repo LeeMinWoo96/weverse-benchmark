@@ -5,7 +5,7 @@
 // 수신부는 음 ...
 
 import { Router } from "express";
-import {producer} from "../config/kafka_confg.mjs";
+import {producer} from "../config/kafka_config.mjs";
 
 const testRouter = Router();
 

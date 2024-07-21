@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 import cors from 'cors'; // Import the cors middleware
 import sql from '../config/sql.mjs';
-import { producer, consumer, connectKafka, disconnectKafka } from "../config/kafka_confg.mjs";
+import { producer, consumer, connectKafka, disconnectKafka } from "../config/kafka_config.mjs";
 import runConsumer from "../services/kafka.consumer.mjs"
 import indexRouter from '../routes/index.route.mjs';
 import {addClient, removeClient} from "../config/sse_config.mjs";
