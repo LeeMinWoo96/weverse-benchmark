@@ -201,7 +201,8 @@ const Header = ({ loginModal,
                         </NavLink>
                     </li> : null}
                     <li>{currentUser.id}</li>
-                    <NotificationComponent userId={loginModal.getUser}/>
+
+                    <NotificationComponent userId={currentUser.id}/>
                     <li>
                         <div className="login-and-cart">
                             {validLogin ? (

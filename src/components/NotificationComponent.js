@@ -6,11 +6,12 @@ const NotificationComponent = ({ userId }) => {
 
     useEffect(() => {
         const eventSource = new EventSource(`http://localhost:3005/notifications/${userId}/sse`);
-
+        console.log(userId)
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            if (data.unreadCount !== undefined) {
-                setUnreadCount(data.unreadCount);
+            console.log("메시지 왔다!!",data)
+            if (data.read !== undefined && data.read === false) {
+                setUnreadCount(unreadCount +1);
             } else {
                 setNotifications((prev) => [...prev, data]);
             }
@@ -19,7 +20,7 @@ const NotificationComponent = ({ userId }) => {
         return () => {
             eventSource.close();
         };
-    }, [userId]);
+    }, [userId,unreadCount]);
 
     return (
         <div className ="txt-white">

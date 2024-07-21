@@ -55,6 +55,7 @@ function App() {
       const response = await fetch(`${process.env.REACT_APP_USERS_URL}/${id}`);
       const body = await response.json();
       setCurrentUser(body.data[0]);
+      console.log(body.data[0])
       const jsonUser = JSON.stringify(body.data[0]);
       sessionStorage.setItem('currentUser', jsonUser);
       if (response.status === 200) {

@@ -4,7 +4,7 @@ export const processNotification = async (event) => {
     const { userId, senderId, type, title, message, timestamp } = event;
 
     // Store notification in Redis
-    const notificationKey = `user:${userId}:notifications`;
+    // const notificationKey = `user:${userId}:notifications`;
     const notification = {
         senderId,
         type,

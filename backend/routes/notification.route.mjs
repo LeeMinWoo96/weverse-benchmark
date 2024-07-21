@@ -5,6 +5,7 @@ import {producer} from "../config/kafka_config.mjs";
 
 const notificationRouter = Router();
 
+// 이벤트 발생 api, 이벤트 발생 시 카프카 producer push 하는 부분
 notificationRouter.post('/events/:type', async (req, res) => {
     const { userId, senderId, title, message } = req.body;
     const timestamp = new Date().toISOString();
@@ -33,7 +34,8 @@ notificationRouter.post('/events/:type', async (req, res) => {
     }
 });
 
-//Server sent event
+//Server sent event 연결 부분
+// 데이터 전송은 카프카 consumer 에서 수행함
 notificationRouter.get('/:userId/sse', (req, res) => {
     const { userId } = req.params;
     console.log("request received");
@@ -48,29 +50,29 @@ notificationRouter.get('/:userId/sse', (req, res) => {
         removeClient(userId);
     });
 });
-
-const headers = {
-    "Content-Type": "text/event-stream",
-    Connection: "keep-alive",
-    "Cache-Control": "no-cache",
-};
-
-let counter = 0;
-
-notificationRouter.get("/subscribe", (req, res) => {
-    console.log("request received");
-    res.writeHead(200, headers);
-    setInterval(async () => {
-        res.write("event: notification\n");
-        res.write(
-            `data: ${JSON.stringify({
-                text: counter,
-                date: new Date().toDateString(),
-            })}`
-        );
-        res.write("\n\n");
-        counter++;
-    }, 2000);
-});
+//
+// const headers = {
+//     "Content-Type": "text/event-stream",
+//     Connection: "keep-alive",
+//     "Cache-Control": "no-cache",
+// };
+//
+// let counter = 0;
+//
+// notificationRouter.get("/subscribe", (req, res) => {
+//     console.log("request received");
+//     res.writeHead(200, headers);
+//     setInterval(async () => {
+//         res.write("event: notification\n");
+//         res.write(
+//             `data: ${JSON.stringify({
+//                 text: counter,
+//                 date: new Date().toDateString(),
+//             })}`
+//         );
+//         res.write("\n\n");
+//         counter++;
+//     }, 2000);
+// });
 
 export default notificationRouter;

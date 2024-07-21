@@ -1,6 +1,6 @@
 import EventSource from 'eventsource';
 
-const userId = 'test';
+const userId = '8ab9bd81-fd65-4136-bad2-ada3e32b53b2';
 const url = `http://localhost:3005/notifications/${userId}/sse`;
 const eventSource = new EventSource(url);
 
