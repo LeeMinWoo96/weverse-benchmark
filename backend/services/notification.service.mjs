@@ -1,5 +1,9 @@
-import {sendNotification} from "../config/sse_config.mjs"; // This utility sends notifications to the client using WebSocket
+import {sendNotification} from "../config/sse_config.mjs";
+import sql from "../config/sql.mjs"; // This utility sends notifications to the client using WebSocket
 
+/*
+    그 자체를 보내는게 아니라 DB에 저장되어 있는 값을 가져와서 전체를 보내기 (일정기간, 만약 클라이언트에서 지우기 누르면 지우기 할 순 있어도 일단 고려
+ */
 export const processNotification = async (event) => {
     const { userId, senderId, type, title, message, timestamp } = event;
 
@@ -20,3 +24,40 @@ export const processNotification = async (event) => {
     // Send notification to the client using WebSocket
     await sendNotification(userId, notification);
 };
+
+
+// 저장 및 읽음 플래그 업데이트 (DB)
+export const createNotificationLog = (notification) => {
+    return new Promise((resolve, reject) => {
+        const { userId, senderId, type, title, message,read_yn, timestamp } =notification;
+        let query;
+        let params;
+        const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 시각을 ISO 형식으로 가져옴
+
+
+        query = 'INSERT INTO notification_logs (userId, senderId, type, title, message, read_yn, reg_dt) VALUES(?, ?, ?, ?,?, ?,?)';
+
+
+        // const query = `
+        //     INSERT INTO notification_logs (userId, senderId, type, title, message, read_yn, reg_dt)
+        //     VALUES (?, ?, ?, ?, ?, ?, ?)
+        //     ON DUPLICATE KEY UPDATE
+        //         senderId = VALUES(senderId),
+        //         type = VALUES(type),
+        //         title = VALUES(title),
+        //         message = VALUES(message),
+        //         read_yn = VALUES(read_yn),
+        //         reg_dt = VALUES(reg_dt);
+        //
+        //     -- 다른 쿼리를 추가할 수 있습니다
+        //     UPDATE another_table SET column = value WHERE condition;
+        // `;
+
+
+        params = [userId, senderId, type, title, message, read_yn, timestamp];
+
+        sql.execute(query, [...params])
+            .then((result) => resolve(result))
+        // .catch((err) => reject(err))
+    })
+}

@@ -9,6 +9,9 @@ const runConsumer = async () => {
         await consumer.subscribe({ topic, fromBeginning: true });
     }
 
+    /*
+    수신 시 바로 알람 발송 코드로 넘어가지 말고 DB 저장하는 코드 추가하기
+     */
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
 
