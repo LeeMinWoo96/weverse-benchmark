@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {addClient, removeClient} from "../config/sse_config.mjs";
 import {producer} from "../config/kafka_config.mjs";
+import {getNotifications} from "../services/notification.service.mjs";
+import {getInitNotifications} from "../controllers/notification.controller.mjs";
 
 
 const notificationRouter = Router();
@@ -50,29 +52,7 @@ notificationRouter.get('/:userId/sse', (req, res) => {
         removeClient(userId);
     });
 });
-//
-// const headers = {
-//     "Content-Type": "text/event-stream",
-//     Connection: "keep-alive",
-//     "Cache-Control": "no-cache",
-// };
-//
-// let counter = 0;
-//
-// notificationRouter.get("/subscribe", (req, res) => {
-//     console.log("request received");
-//     res.writeHead(200, headers);
-//     setInterval(async () => {
-//         res.write("event: notification\n");
-//         res.write(
-//             `data: ${JSON.stringify({
-//                 text: counter,
-//                 date: new Date().toDateString(),
-//             })}`
-//         );
-//         res.write("\n\n");
-//         counter++;
-//     }, 2000);
-// });
+
+notificationRouter.get('/:userId/initial', getInitNotifications);
 
 export default notificationRouter;

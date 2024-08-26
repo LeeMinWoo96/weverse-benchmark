@@ -11,11 +11,11 @@ export const removeClient = (userId) => {
 
 export const sendNotification = (userId, notification) => {
     console.log("sendNotification (sse_config.mjs)")
-    console.log(userId, notification)
+    console.log(userId, notification[0])
     const client = clients.get(userId);
-    console.log(client)
+    // console.log(client)
     if (client) {
-        client.write(`data: ${JSON.stringify(notification)}\n\n`);
+        client.write(`data: ${JSON.stringify(notification[0])}\n\n`);
     }
 };
 

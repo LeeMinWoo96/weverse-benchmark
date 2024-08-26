@@ -1,5 +1,5 @@
 import { consumer } from '../config/kafka_config.mjs';
-import { processNotification } from './notification.service.mjs';
+import { processNotification,createNotificationLog} from './notification.service.mjs';
 
 const runConsumer = async () => {
     const topics = ['notification-events-message', 'notification-events-friend-request'];
@@ -17,6 +17,7 @@ const runConsumer = async () => {
 
             const event = JSON.parse(message.value.toString());
             console.log("Received Kafka consumer message : ", event);
+            await createNotificationLog(event);
             await processNotification(event);
         },
     });

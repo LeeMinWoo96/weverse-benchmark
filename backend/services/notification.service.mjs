@@ -7,35 +7,42 @@ import sql from "../config/sql.mjs"; // This utility sends notifications to the 
 export const processNotification = async (event) => {
     const { userId, senderId, type, title, message, timestamp } = event;
 
+
+
     // Store notification in Redis
     // const notificationKey = `user:${userId}:notifications`;
-    const notification = {
-        senderId,
-        type,
-        title,
-        message,
-        timestamp,
-        read: false,
-    };
+    // const notification = {
+    //     senderId,
+    //     type,
+    //     title,
+    //     message,
+    //     timestamp,
+    //     read: false,
+    // };
 
     // await redisClient.lpush(notificationKey, JSON.stringify(notification));
     // await redisClient.incr(`user:${userId}:unreadCount`);
 
     // Send notification to the client using WebSocket
-    await sendNotification(userId, notification);
+
+
+    const notifications = await getNotifications(userId);
+    // console.log("a",notifications)
+    await sendNotification(userId, notifications);
 };
 
 
 // 저장 및 읽음 플래그 업데이트 (DB)
 export const createNotificationLog = (notification) => {
     return new Promise((resolve, reject) => {
-        const { userId, senderId, type, title, message,read_yn, timestamp } =notification;
+        const { userId, senderId, type, title, message, read, timestamp } =notification;
+        // console.log(notification)
         let query;
         let params;
         const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 시각을 ISO 형식으로 가져옴
 
 
-        query = 'INSERT INTO notification_logs (userId, senderId, type, title, message, read_yn, reg_dt) VALUES(?, ?, ?, ?,?, ?,?)';
+        query = 'INSERT INTO notification_logs (user_id, sender_id, type, title, message, read_yn, reg_dt) VALUES(?, ?, ?, ?,?, ?,?)';
 
 
         // const query = `
@@ -54,10 +61,29 @@ export const createNotificationLog = (notification) => {
         // `;
 
 
-        params = [userId, senderId, type, title, message, read_yn, timestamp];
-
+        params = [userId, senderId, type, title, message, read, currentDate];
+        console.log(params)
         sql.execute(query, [...params])
             .then((result) => resolve(result))
         // .catch((err) => reject(err))
     })
 }
+
+export const getNotifications = (userId, pageSize='10') => {
+    return new Promise((resolve, reject) => {
+        let query;
+        let params;
+
+        query = 'SELECT * FROM notification_logs  WHERE user_id = ? LIMIT ?';
+        params = [userId, pageSize];
+
+        // console.log(params)
+
+
+        sql.execute(query, params)
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((err) => reject(err));
+    });
+};
