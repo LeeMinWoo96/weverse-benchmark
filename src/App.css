@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.App {
+    text-align: center;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.logo img {
+    width: 150px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.signin-btn {
+    background-color: #00C6D8;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.icon {
+    width: 30px;
+    margin-left: 10px;
+}
+
+/* Carousel */
+.carousel-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+    height: 250px;
+    text-align: left;
+}
+
+.carousel-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.carousel-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.carousel-card img {
+    width: 150px;
+    height: auto;
+    margin-top: 15px;
+}
+
+/* DM Section */
+.dm-section {
+    background-color: #f1f3f5;
+    padding: 40px 20px;
+    margin-top: 20px;
+}
+
+.dm-artist-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.dm-artist-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    margin: 10px;
+}
+
+.dm-artist-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.dm-artist-item p {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Artist Section */
+.artist-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.artist-item {
+    width: 150px;
+    margin: 10px;
+    text-align: center;
+}
+
+.artist-item img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.artist-item p {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.loader {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+}
