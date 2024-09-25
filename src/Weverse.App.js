@@ -53,6 +53,11 @@ const KKOTICarousel = () => {
                     <p>IN GOYANG<br />오프라인 공연 상세 안내</p>
                     <img src="https://via.placeholder.com/150x100?text=Seventeen+Tour" alt="Seventeen Banner" />
                 </div>
+                <div className="carousel-card" style={{ background: '#e6e5f9' }}>
+                    <h3>[RIGHT HERE] WORLD TOUR</h3>
+                    <p>IN GOYANG<br />오프라인 공연 상세 안내</p>
+                    <img src="https://via.placeholder.com/150x100?text=Seventeen+Tour" alt="Seventeen Banner" />
+                </div>
             </ItemsCarousel>
         </div>
     );
@@ -108,7 +113,7 @@ const InfiniteArtistScroll = () => {
                 { name: 'New Artist 3', imgSrc: 'https://via.placeholder.com/150?text=New+Artist+3' },
             ]);
 
-            if (artists.length >= 20) {
+            if (artists.length >= 50) {
                 setHasMore(false);
             }
         }, 1500);
